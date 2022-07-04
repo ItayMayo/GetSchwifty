@@ -13,20 +13,31 @@ export class BoardController {
         this.View.bindTileClick(this.onTileClick);
     }
 
-    onBoardGenerated = board =>
+    onBoardGenerated = gameBoard =>
     {
-        const isSolvable = this.#_gameController.isBoardSolvable(board);
+        const isSolvable = this.#_gameController.isBoardSolvable(gameBoard);
 
         return isSolvable;
     }
 
-    onBoardChanged = board => 
+    onBoardChanged = gameBoard => 
     {
-        this.View.displayBoard(board);
+        this.View.displayBoard(gameBoard);
+        const isGameOver = this.#_gameController.isGameOver(gameBoard);
+
+        if (isGameOver)
+        {
+            this.onGameOver();
+        }
     }
 
-    onTileClick = tile => 
+    onGameOver = () =>
     {
-        this.Model.onTileClick(tile);
+        this.View.onGameOver();
+    }
+
+    onTileClick = clickedTile => 
+    {
+        this.Model.onTileClick(clickedTile);
     }
 }
