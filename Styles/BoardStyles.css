@@ -1,13 +1,3 @@
-* {
-    background: #F5F5F5;
-}
-
-#root {
-    display: grid;
-    justify-content: center;
-    justify-items: center;
-}
-
 .boardContainer {
     display: grid;
     gap: 15px;

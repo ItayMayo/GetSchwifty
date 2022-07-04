@@ -1,0 +1,13 @@
+* {
+    background: #F5F5F5;
+}
+
+body div {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+}
+
+#root {
+    gap: 20px;
+}
