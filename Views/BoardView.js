@@ -4,6 +4,7 @@ export class BoardView {
     #_elementOperations;
     #_rootElement;
     #_boardContainer;
+    #_gameOverTitle;
     #_clickHandler;
 
     constructor() 
@@ -12,12 +13,15 @@ export class BoardView {
         this.#_rootElement = this.#_elementOperations.getElement("#root");
         this.#_boardContainer = this.#_elementOperations.createElement("div", "boardContainer");
         this.#_clickHandler = undefined;
-        const title = this.#_elementOperations.createElement("h1");
-        title.textContent = "GetSchwifty"
-        this.#_rootElement.append(title, this.#_boardContainer);
+        const gameTitle = this.#_elementOperations.createElement("h1");
+        gameTitle.textContent = "GetSchwifty"
+        this.#_rootElement.append(gameTitle, this.#_boardContainer);
+        this.#_gameOverTitle = this.#_elementOperations.createElement("h2");
+        this.#_gameOverTitle.textContent = ""
+        this.#_rootElement.append(this.#_gameOverTitle);
     }
 
-    displayBoard(board) 
+    displayBoard(gameBoard) 
     {
         while (this.#_boardContainer.firstChild)
         {
@@ -25,14 +29,15 @@ export class BoardView {
             this.#_boardContainer.removeChild(firstChild);
         }
 
-        const rowLength = Math.sqrt(board.length); 
+        this.#_gameOverTitle.textContent = ""
+        const rowLength = Math.sqrt(gameBoard.length); 
         this.#_boardContainer.style.gridTemplateColumns = `repeat(${rowLength}, 1fr)`;
 
-        board.forEach(tile => 
+        gameBoard.forEach(currentTile => 
         {
                 let tileButton = this.#_elementOperations.createElement("button", "tile-button");
-                tileButton.textContent = tile.Value;
-                tileButton.addEventListener("click", () => this.#_clickHandler(tile));
+                tileButton.textContent = currentTile.Value;
+                tileButton.addEventListener("click", () => this.#_clickHandler(currentTile));
                 this.#_boardContainer.append(tileButton);
         });
     }
@@ -40,5 +45,10 @@ export class BoardView {
     bindTileClick(handler)
     {
         this.#_clickHandler = handler;
+    }
+
+    onGameOver()
+    {
+        this.#_gameOverTitle.textContent = "Game Over"
     }
 }
