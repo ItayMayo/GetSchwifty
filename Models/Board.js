@@ -2,31 +2,51 @@ import { Tile } from "./Tile.js";
 
 export class Board {
     #_tileOperations;
+    #_regenerateBoard;
 
-    constructor(tileOperations, boardSize = 3) 
+    constructor(tileOperations, boardSize = undefined) 
     {
         this.#_tileOperations = tileOperations;
-        this.gameBoard = JSON.parse(localStorage.getItem('board')) || this.createSolvableBoard(boardSize);
-        this.boardSize = Math.sqrt(this.gameBoard.length);
+        this.gameBoard = JSON.parse(localStorage.getItem('board')) || [];
+        this.BoardSize = Math.sqrt(this.gameBoard.length);
+        this.BoardCreationDate = new Date(localStorage.getItem("board_creation_date"));
+        this.#_regenerateBoard = false;
+        
+        if (boardSize && boardSize != this.BoardSize)
+        {
+            this.#_regenerateBoard = true;
+            this.BoardSize = boardSize;
+        }
     }
 
-    createSolvableBoard(boardSize) 
+    checkRegeneration()
+    {
+        if (this.#_regenerateBoard)
+        {
+            this.gameBoard = this.createSolvableBoard(this.BoardSize);
+            this.updateBoard();
+        }
+    }
+
+    createSolvableBoard(BoardSize) 
     {
         let isBoardSolvable = false;
         let gameBoard = undefined;
 
         while (!isBoardSolvable)
         {
-            gameBoard = this.#createBoard(boardSize);
+            gameBoard = this.#createBoard(BoardSize);
             isBoardSolvable = this.onBoardGenerated(gameBoard);
         }
 
+        this.BoardCreationDate = new Date();
+        localStorage.setItem('board_creation_date', this.BoardCreationDate );
         return gameBoard;
     }
 
-    #createBoard(boardSize) 
+    #createBoard(BoardSize) 
     {
-        const numberOfTiles = Math.pow(boardSize, 2);
+        const numberOfTiles = Math.pow(BoardSize, 2);
         let gameBoard = [];
         let usedNumbers = [];
         let currentRowIndex = 0;
@@ -38,14 +58,14 @@ export class Board {
             usedNumbers.push(randomNumber);
                
             if (randomNumber == numberOfTiles) {
-                randomNumber = " "
+                randomNumber = " ";
             }
                 
             let tile = new Tile(randomNumber,currentRowIndex, currentColumnIndex,  () => this.onTileClick(tile));
             gameBoard.push(tile);
             currentColumnIndex++;
 
-            if (currentColumnIndex == boardSize) {
+            if (currentColumnIndex == BoardSize) {
                 currentRowIndex++;
                 currentColumnIndex = 0;
             }
@@ -57,7 +77,7 @@ export class Board {
 
     resetBoard()
     {
-        this.gameBoard = this.createSolvableBoard(this.boardSize);
+        this.gameBoard = this.createSolvableBoard(this.BoardSize);
         this.updateBoard();
     }
 
