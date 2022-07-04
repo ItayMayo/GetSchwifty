@@ -1,0 +1,14 @@
+#root {
+    display: grid;
+    justify-content: center;
+}
+
+.boardContainer {
+    display: grid;
+    gap: 10px;
+}
+
+.tileButton {
+    padding: 10px;
+    background-color: #ccc;  
+}
