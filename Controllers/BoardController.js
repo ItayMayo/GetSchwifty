@@ -1,15 +1,32 @@
 export class BoardController {
     #_gameController;
+    #_gameOverHandler;
 
-    constructor (model, view, gameController)
+    constructor (model, view, gameController, onGameOver)
     {
         this.Model = model;
         this.View = view;
         this.#_gameController = gameController;
+        this.#_gameOverHandler = onGameOver;
         this.Model.bindBoardChanged(this.onBoardChanged);
         this.Model.bindOnBoardGenerated(this.onBoardGenerated);
         this.Model.updateBoard();
+        this.Model.checkRegeneration();
+        this.View.bindChangeUserButtonClick(this.onChangeUserButtonClicked);
         this.View.bindTileClick(this.onTileClick);
+        this.View.bindResetButtonClick(this.onResetButtonClicked);
+    }
+
+    onChangeUserButtonClicked = () =>
+    {
+        localStorage.removeItem("user");
+        this.Model.resetBoard();
+        location.reload();
+    }
+
+    onResetButtonClicked = () =>
+    {
+        this.Model.resetBoard();
     }
 
     onBoardGenerated = gameBoard =>
@@ -33,6 +50,7 @@ export class BoardController {
     onGameOver = () =>
     {
         this.View.onGameOver();
+        this.#_gameOverHandler(this.Model.BoardCreationDate);
     }
 
     onTileClick = clickedTile => 
