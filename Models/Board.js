@@ -3,11 +3,25 @@ import { Tile } from "./Tile.js";
 export class Board {
     constructor(boardSize = 3) 
     {
-        this.board = JSON.parse(localStorage.getItem('board')) || this.createBoard(boardSize);
+        this.board = JSON.parse(localStorage.getItem('board')) || this.createSolvableBoard(boardSize);
         this.boardSize = boardSize;
     }
 
-    createBoard(boardSize) 
+    createSolvableBoard(boardSize) 
+    {
+        let isBoardSolvable = false;
+        let board = undefined;
+
+        while (!isBoardSolvable)
+        {
+            board = this.#createBoard(boardSize);
+            isBoardSolvable = this.onBoardGenerated(board);
+        }
+
+        return board;
+    }
+
+    #createBoard(boardSize) 
     {
         const numberOfTiles = Math.pow(boardSize, 2);
         let board = [];
@@ -35,11 +49,12 @@ export class Board {
         }
 
         return board;
+
     }
 
     resetBoard()
     {
-        this.board = this.createBoard(this.boardSize);
+        this.board = this.createSolvableBoard(this.boardSize);
         this.updateBoard();
     }
 
@@ -124,9 +139,13 @@ export class Board {
         this.onBoardChanged = callback;
     }
 
+    bindOnBoardGenerated(callback)
+    {
+        this.onBoardGenerated = callback;
+    }
+
     updateBoard()
     {
-        console.log(this.board);
         this.onBoardChanged(this.board);
         const serializedBoard = JSON.stringify(this.board);
         localStorage.setItem('board', serializedBoard);
