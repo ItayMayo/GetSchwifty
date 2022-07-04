@@ -1,5 +1,3 @@
-import {ElementOperations} from "../Core/ElementsOperations/ElementOperations.js"
-
 export class BoardView {
     #_elementOperations;
     #_rootElement;
@@ -7,9 +5,9 @@ export class BoardView {
     #_gameOverTitle;
     #_clickHandler;
 
-    constructor() 
+    constructor(elementOperations)
     {
-        this.#_elementOperations = new ElementOperations();
+        this.#_elementOperations = elementOperations;
         this.#_rootElement = this.#_elementOperations.getElement("#root");
         this.#_boardContainer = this.#_elementOperations.createElement("div", "boardContainer");
         this.#_clickHandler = undefined;
