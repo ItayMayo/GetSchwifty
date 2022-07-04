@@ -25,17 +25,15 @@ export class BoardView {
             this.#_boardContainer.removeChild(firstChild);
         }
 
-        this.#_boardContainer.style.gridTemplateColumns = `repeat(${board.length}, 1fr)`;
+        const rowLength = Math.sqrt(board.length); 
+        this.#_boardContainer.style.gridTemplateColumns = `repeat(${rowLength}, 1fr)`;
 
-        board.forEach(row => 
+        board.forEach(tile => 
         {
-            row.forEach(tile => 
-            {
                 let tileButton = this.#_elementOperations.createElement("button", "tile-button");
                 tileButton.textContent = tile.Value;
                 tileButton.addEventListener("click", () => this.#_clickHandler(tile));
                 this.#_boardContainer.append(tileButton);
-            });
         });
     }
 
