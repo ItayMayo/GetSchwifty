@@ -41,6 +41,7 @@ export class Board {
 
         this.BoardCreationDate = new Date();
         localStorage.setItem('board_creation_date', this.BoardCreationDate );
+        
         return gameBoard;
     }
 
@@ -72,7 +73,6 @@ export class Board {
         }
 
         return gameBoard;
-
     }
 
     resetBoard()
@@ -84,7 +84,6 @@ export class Board {
     onTileClick(clickedTile) 
     {
         const neighbours = this.#_tileOperations.GetTileNeighbours(this.gameBoard, clickedTile.Row, clickedTile.Column);
-
         const isNearEmptyTile = neighbours.some((tile) => tile.Value === " ");
 
         if (isNearEmptyTile) {
@@ -113,7 +112,6 @@ export class Board {
             randomNumber = Math.floor(Math.random() * numberOfTiles) + 1;
             
             doesExist = numbersBlacklist.some((number) => {
-                
                 return number == randomNumber;
             });
         }

@@ -12,7 +12,8 @@ import { TableController } from "./Controllers/TableController.js";
 import { TableView } from "./Views/TableView.js";
 import { LatestFiveTable } from "./Models/LatestFiveTable.js";
 
-export class Initiator {
+export class Initiator 
+{
     #_elementOperations;
     #_tableController;
     #_user;
@@ -39,7 +40,6 @@ export class Initiator {
         const boardView = new BoardView(this.#_elementOperations, this.#_user);
         const winStrategy = new BasicWinStrategy();
         const gameController = new GameController(winStrategy);
-        
         const boardController = new BoardController(board, boardView, gameController, this.#_tableController.onGameOver);
     }
 }

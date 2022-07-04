@@ -1,4 +1,5 @@
-export class BoardView {
+export class BoardView 
+{
     #_elementOperations;
     #_rootElement;
     #_boardContainer;

@@ -1,5 +1,5 @@
-export class ElementOperations {
-    
+export class ElementOperations 
+{    
     createElement(tag, className) 
     {
         const element = document.createElement(tag);
