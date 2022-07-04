@@ -99,6 +99,6 @@ export class BoardView {
 
     onGameOver()
     {
-        this.#_gameOverTitle.textContent = "Game Over"
+        alert("Game Over!");
     }
 }
