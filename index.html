@@ -2,10 +2,25 @@
 <html>
     <head>
         <title>GetSchwifty</title>
+        <link rel="stylesheet" href="./Styles/main.css">
         <link rel="stylesheet" href="./Styles/BoardStyles.css">
+        <link rel="stylesheet" href="./Styles/TableStyles.css">
     </head>
     <body>
-        <div id="root"></div>
+        <div id="root">
+            <div id="main"></div>
+            <div id="tableContainer">
+                <table id="table">
+                    <tr id="tableHeadings">
+                      <th>Name</th>
+                      <th>Rank</th>
+                      <th>Game Length</th>
+                      <th>Board Size</th>
+                      <th>Starting Date</th>
+                    </tr>
+                </table>                  
+            </div>
+        </div>
         <script src="./Bootstrapper.js" type="module"></script>
     </body>
 </html>
