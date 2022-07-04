@@ -9,25 +9,29 @@ export class Board {
 
     createBoard(boardSize) 
     {
+        const numberOfTiles = Math.pow(boardSize, 2);
         let board = [];
         let usedNumbers = [];
+        let currentRowIndex = 0;
+        let currentColumnIndex = 0;
 
-        for (let row = 0; row < boardSize; row++)
+        for (let index = 0; index < numberOfTiles; index++)
         {
-            board[row] = [];
-            
-            for(let column = 0; column < boardSize; column++) 
-            {
-                let randomNumber = this.#GenerateRandomUniqueNumber(usedNumbers, boardSize);
-                usedNumbers.push(randomNumber);
+            let randomNumber = this.#GenerateRandomUniqueNumber(usedNumbers, numberOfTiles);
+            usedNumbers.push(randomNumber);
+               
+            if (randomNumber == numberOfTiles) {
+                randomNumber = " "
+            }
                 
-                if (randomNumber == boardSize) {
-                    randomNumber = " "
-                }
-                
-                let tile = new Tile(randomNumber,row, column,  () => this.onTileClick(tile));
-                board[row].push(tile);
-            }  
+            let tile = new Tile(randomNumber,currentRowIndex, currentColumnIndex,  () => this.onTileClick(tile));
+            board.push(tile);
+            currentColumnIndex++;
+
+            if (currentColumnIndex == boardSize) {
+                currentRowIndex++;
+                currentColumnIndex = 0;
+            }
         }
 
         return board;
@@ -58,23 +62,24 @@ export class Board {
         const tile1_column = tile1.Column;
         const tile2_row = tile2.Row;
         const tile2_column = tile2.Column;
+        const tile1_index = this.board.findIndex(tile => tile1.Value === tile.Value);
+        const tile2_index = this.board.findIndex(tile => tile2.Value === tile.Value);
         tile1.Row = tile2_row;
         tile1.Column = tile2_column;
         tile2.Row = tile1_row;
         tile2.Column = tile1_column;
-        this.board[tile1.Row][tile1.Column] = tile1;
-        this.board[tile2.Row][tile2.Column] = tile2;
+        this.board[tile1_index] = tile2;
+        this.board[tile2_index] = tile1;
     }
 
-    #GenerateRandomUniqueNumber(numbersBlacklist, max) 
+    #GenerateRandomUniqueNumber(numbersBlacklist, numberOfTiles) 
     {
-        max *= max;
         let doesExist = true;
         let randomNumber = undefined;
         
         while (doesExist)
         {
-            randomNumber = Math.floor(Math.random() * max) + 1;
+            randomNumber = Math.floor(Math.random() * numberOfTiles) + 1;
             
             doesExist = numbersBlacklist.some((number) => {
                 return number == randomNumber;
@@ -89,25 +94,25 @@ export class Board {
         let neighbours = [];
 
         if (row < this.boardSize - 1) {
-            let tile = this.board[row + 1][column];
+            let tile = this.board.filter(tile => tile.Row === row + 1 && tile.Column === column)[0];
             neighbours.push(tile);
         }
 
         if (row > 0) 
         {
-            let tile = this.board[row - 1][column];
+            let tile = this.board.filter(tile => tile.Row === row - 1 && tile.Column === column)[0];
             neighbours.push(tile);
         }
         
         if (column < this.boardSize - 1)
         {
-            let tile = this.board[row][column + 1];
+            let tile = this.board.filter(tile => tile.Row === row&& tile.Column === column + 1)[0];
             neighbours.push(tile);
         }
 
         if (column > 0) 
         {
-            let tile = this.board[row][column - 1];
+            let tile = this.board.filter(tile => tile.Row === row && tile.Column === column - 1)[0];
             neighbours.push(tile);
         }
 
@@ -121,6 +126,7 @@ export class Board {
 
     updateBoard()
     {
+        console.log(this.board);
         this.onBoardChanged(this.board);
         const serializedBoard = JSON.stringify(this.board);
         localStorage.setItem('board', serializedBoard);
