@@ -50,8 +50,8 @@ export class BoardController {
     onGameOver = () =>
     {
         this.View.onGameOver();
-        this.Model.resetBoard();
         this.#_gameOverHandler(this.Model.BoardCreationDate);
+        this.Model.resetBoard();
     }
 
     onTileClick = clickedTile => 
