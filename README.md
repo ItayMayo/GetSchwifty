@@ -1,4 +1,5 @@
 # GetSchwifty
+## [DEMO](https://itaymayo.github.io/GetSchwifty/)
 ## What's Working
 - Basic 3x3 board - Priority 1
 - Game is always solvable - Priority 1
